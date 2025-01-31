@@ -1,0 +1,42 @@
+﻿@model HamsterForum.Models.Discussion
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<div class="container mt-4">
+    <!-- Discussion Title -->
+    <h2 class="mb-3">@Model.Title</h2>
+
+    <!-- Original Discussion Post -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <img src="@Url.Content("/images/" + Model.ImageFilename)" alt="Picture for @Model.Title" class="img-fluid" />
+            <p>@Model.Content.</p>
+        </div>
+    </div>
+
+    @foreach(var comment in Model.Comments){
+        <!-- Comment Section -->
+        <div class="card">
+            <div class="card-body">
+                <h5>Comments</h5>
+                <div class="border-bottom pb-2 mb-2">
+                    <p>@comment.Content</p>
+                </div>
+            </div>
+        </div>
+    }
+   
+</div>
+<h5>Add a Comment</h5>
+@await Html.PartialAsync("~/Views/Comments/Create.cshtml", new HamsterForum.Models.Comment { DiscussionId = Model.DiscussionId })
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.DiscussionId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using HamsterForum.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<HamsterForumContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HamsterForumContext") ?? throw new InvalidOperationException("Connection string 'HamsterForumContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
