@@ -3,6 +3,11 @@
 @{
     ViewData["Title"] = "Create";
 }
+
+<h1>Create</h1>
+
+<h4>Comment</h4>
+<hr />
 <div class="row">
     <div class="col-md-4">
         <form id="commentForm" asp-action="Create" asp-controller="Comments">
@@ -10,7 +15,7 @@
             <input type="hidden" asp-for="DiscussionId" />
 
             <div class="mb-3">
-                @* <label asp-for="Content" class="control-label"></label> *@
+                <label asp-for="Content" class="control-label"></label>
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
@@ -20,6 +25,8 @@
         </form>
     </div>
 </div>
+
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

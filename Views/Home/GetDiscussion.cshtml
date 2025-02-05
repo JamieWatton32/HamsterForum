@@ -14,24 +14,27 @@
 
     @if (Model.Comments != null && Model.Comments.Any()){
      <h5>Comments</h5>
-    @foreach (var comment in Model.Comments)
-    {
-        <!-- Comment Section -->
-        <div class="card">
-            <div class="card-body">
-                <div class="border-bottom pb-2 mb-2">
-                    <p>@comment.Content</p>
+        @foreach (var comment in Model.Comments)
+        {
+            <!-- Comment Section -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="border-bottom pb-2 mb-2">
+                        <p>@comment.Content</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
     }else{
         <p>No comments yet. Be the first to comment!</p>
     }
 
 </div>
-<h5>Add a Comment</h5>
-@await Html.PartialAsync("~/Views/Comments/Create.cshtml", new HamsterForum.Models.Comment { DiscussionId = Model.DiscussionId })
+<a href="@Url.Action("Create", "Comments", new { id = Model.DiscussionId })">
+    <h5>Add a Comment</h5>
+    </a>
+
+@* @await Html.PartialAsync("~/Views/Comments/Create.cshtml", new HamsterForum.Models.Comment { DiscussionId = Model.DiscussionId }) *@
 
 <div>
     <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Discussions</a>

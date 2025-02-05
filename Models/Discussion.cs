@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using HamsterForum.Models;
+
 namespace HamsterForum.Models {
     public class Discussion {   //primary key
         public int DiscussionId { get; set; }

@@ -5,37 +5,45 @@
 
 <div class="container">
     <div class="row">
-        @foreach(var item in Model){
-                
-            var time = (DateTime.Now - item.CreateDate).Days;
-            int NumComments = 0;
-            if(item.Comments!=null){
-                NumComments = item.Comments.Count;
-            }
-                
-            <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0" >
-                <div class="row align-items-center">
+        <a asp-controller="Discussions" asp-action="Create">
+            <h5>
+                Add new Discussion
+            </h5>
+        </a>
+		@foreach (var item in Model)
+            {
 
-                    <img src="@Url.Content("/images/" + item.ImageFilename)" alt="Picture for @item.Title" class="img-fluid" style="width:100px; height:100px; border-radius:1rem;" />
-                    <div class="col-md-6 mb-3 mb-sm-0">
-                        
+                var time = (DateTime.Now - item.CreateDate).Days;
+                int NumComments = 0;
+                if (item.Comments != null)
+                {
+                    NumComments = item.Comments.Count;
+                }
+
+                <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                    <div class="row align-items-center">
+
+                        <img src="@Url.Content("/images/" + item.ImageFilename)" alt="Picture for @item.Title" class="img-fluid" style="width:100px; height:100px; border-radius:1rem;" />
+                        <div class="col-md-6 mb-3 mb-sm-0">
+
                             <a asp-controller="Home" asp-action="GetDiscussion" asp-route-id="@item.DiscussionId">
                                 <h5>
-                                @item.Title
+                                    @item.Title
                                 </h5>
                             </a>
-                            
-                     
+
+
                             <p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time days ago on @item.CreateDate.ToString()</span></p>
-                    </div>
-                    <div class="col-md-4 op-7">
-                        <div class="row text-center op-7">
-                            <div class="col px-1"> <i class="ion-connection-bars icon-1x"></i> <span class="d-block text-sm">@NumComments Comments</span> </div>
+                        </div>
+                        <div class="col-md-4 op-7">
+                            <div class="row text-center op-7">
+                                <div class="col px-1"> <i class="ion-connection-bars icon-1x"></i> <span class="d-block text-sm">@NumComments Comments</span> </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+       
         <!-- Sidebar from bootstrap template. Might use might not. -->
         @*  <div class="col-lg-3 mb-4 mb-lg-0 px-lg-0 mt-lg-0"> *@
         @*     <div style="visibility: hidden; display: none; width: 285px; height: 801px; margin: 0px; float: none; position: static; inset: 85px auto auto;"></div><div data-settings="{&quot;parent&quot;:&quot;#content&quot;,&quot;mind&quot;:&quot;#header&quot;,&quot;top&quot;:10,&quot;breakpoint&quot;:992}" data-toggle="sticky" class="sticky" style="top: 85px;"> *@
@@ -93,5 +101,4 @@
         @*     </div> *@
         @* </div> *@
     </div>
-</div>
 </div>

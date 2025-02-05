@@ -31,8 +31,9 @@
    
 </div>
 <h5>Add a Comment</h5>
-@await Html.PartialAsync("~/Views/Comments/Create.cshtml", new HamsterForum.Models.Comment { DiscussionId = Model.DiscussionId })
-
+<a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId">
+    <h5>Add a Comment</h5>
+</a>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.DiscussionId">Edit</a> |
     <a asp-action="Index">Back to List</a>
