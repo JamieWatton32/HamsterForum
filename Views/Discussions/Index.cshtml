@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.Content)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageFilename)
+                @Html.DisplayName("Image")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreateDate)
@@ -37,17 +37,23 @@
                 @Html.DisplayFor(modelItem => item.Content)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageFilename)
+                 <img src="@Url.Content("/images/" + item.ImageFilename)" alt="Picture for @item.Title" class="img-fluid" style="max-height:50px;" />
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
+                    <p>@item.CreateDate.Date.ToShortDateString()</p>
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.DiscussionId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DiscussionId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DiscussionId">Delete</a>
+             <td>
+                <div class="row">
+                        <div class="col-md-8" style="display:flex;">
+                            <a asp-action="Edit" asp-route-id="@item.DiscussionId">Edit&nbsp;</a>|&nbsp
+                            <a asp-action="GetDiscussion" asp-controller="Home" asp-route-id="@item.DiscussionId">&nbspDetails&nbsp;</a>|&nbsp
+                            <a asp-action="Delete" asp-route-id="@item.DiscussionId">&nbspDelete</a>
+                    </div>
+                </div>
+  
             </td>
         </tr>
 }
+
     </tbody>
 </table>

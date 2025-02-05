@@ -7,8 +7,10 @@
     <!-- Original Discussion Post -->
     <div class="card mb-4">
         <div class="card-body">
-            <img src="@Url.Content("/images/" + Model.ImageFilename)" alt="Picture for @Model.Title" class="img-fluid" style ="max-height:500px;" />
-            <p>@Model.Content.</p>
+            <img src="@Url.Content("/images/" + Model.ImageFilename)" alt="Picture for @Model.Title" class="img-fluid" style ="max-height:250px;" />
+            <p>@Model.Content</p>
+            <br>
+            <p>@Model.CreateDate.Date.ToShortDateString()</p>
         </div>
     </div>
 
@@ -34,7 +36,7 @@
     <h5>Add a Comment</h5>
     </a>
 
-@* @await Html.PartialAsync("~/Views/Comments/Create.cshtml", new HamsterForum.Models.Comment { DiscussionId = Model.DiscussionId }) *@
+@* @await Html.PartialAsync("~/Views/Comments/Create.cshtml", new HamsterForum.Models.Comment { DiscussionId = Model.DiscussionId })  *@
 
 <div>
     <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Discussions</a>

@@ -13,13 +13,12 @@ html {
 }
 
 html {
+
   position: relative;
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
+
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
@@ -30,8 +29,7 @@ body {
   text-align: start;
 }
 body {
-    margin-top: 20px;
-    background: #eee;
+    background-color: #ffEAD3;
     color: #708090;
 }
 
