@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<HamsterForumContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("HamsterForumContext") ?? throw new InvalidOperationException("Connection string 'HamsterForumContext' not found.")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<HamsterForumContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<HamsterForumContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

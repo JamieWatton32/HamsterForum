@@ -6,25 +6,26 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using HamsterForum.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.DiaSymReader;
 
 namespace HamsterForum.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -38,39 +39,43 @@ namespace HamsterForum.Areas.Identity.Pages.Account.Manage
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+           
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            // BEGIN: ApplicationUser custom fields
+            [Required]
+            [Display(Name = "Name or Handle")]
+            public string Name { get; set; }
+
+            [Display(Name = "Location")]
+            public string Location { get; set; }
+
+            public string ImageFileName { get; set; }
+
+            public IFormFile ImageFile { get; set; }
+
+            // END: ApplicationUser custom fields
         }
 
-        private async Task LoadAsync(IdentityUser user)
-        {
+        private async Task LoadAsync(ApplicationUser user) {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
-
-            Input = new InputModel
-            {
+            Input = new InputModel {
+                // BEGIN: ApplicationUser custom fields
+                Name = user.Name,
+                Location = user.Location,
+                ImageFileName = user.ImageFileName,
+                ImageFile = user.ImageFile,
+                // END: ApplicationUser custom fields
                 PhoneNumber = phoneNumber
             };
+
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -94,7 +99,7 @@ namespace HamsterForum.Areas.Identity.Pages.Account.Manage
             }
 
             if (!ModelState.IsValid)
-            {
+            {   
                 await LoadAsync(user);
                 return Page();
             }
@@ -108,6 +113,10 @@ namespace HamsterForum.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            if(Input.Name != user.Name) {
+                user.Name = Input.Name;
             }
 
             await _signInManager.RefreshSignInAsync(user);

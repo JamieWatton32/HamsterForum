@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace HamsterForum.Data
 {
-    public class HamsterForumContext : IdentityDbContext
+    public class HamsterForumContext : IdentityDbContext<ApplicationUser>
     {
         public HamsterForumContext (DbContextOptions<HamsterForumContext> options)
             : base(options)
