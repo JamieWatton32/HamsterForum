@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HamsterForum.Data;
 using HamsterForum.Models;
+using Microsoft.AspNetCore.Authorization;
 
 
-namespace HamsterForum.Controllers
-{
+namespace HamsterForum.Controllers {
+    [Authorize]
     public class CommentsController : Controller
     {
         private readonly HamsterForumContext _context;

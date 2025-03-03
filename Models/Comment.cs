@@ -1,4 +1,5 @@
-﻿using HamsterForum.Models;
+﻿using HamsterForum.Data;
+using HamsterForum.Models;
 
 namespace HamsterForum.Models {
     public class Comment {   //primary key
@@ -8,6 +9,7 @@ namespace HamsterForum.Models {
 
         //foreign key
         public int DiscussionId { get; set; }
+
 
     }
 

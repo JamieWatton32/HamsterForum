@@ -118,6 +118,15 @@ namespace HamsterForum.Areas.Identity.Pages.Account.Manage
             if(Input.Name != user.Name) {
                 user.Name = Input.Name;
             }
+            if(Input.Location != user.Location) {
+                user.Location = Input.Location;
+            }
+            if(Input.ImageFileName != user.ImageFileName) {
+                user.ImageFileName = Input.ImageFileName;
+            }
+            if(Input.ImageFile != user.ImageFile) {
+                user.ImageFile = Input.ImageFile;
+            }
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

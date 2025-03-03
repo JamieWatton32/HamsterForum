@@ -30,17 +30,18 @@
                 <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <textarea asp-for="Input.Bio" class="form-control" row="3"></textarea>
-                <label asp-for="Input.Bio" class="form-label"></label>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Location" class="form-control" />
+                <textarea asp-for="Input.Location" class="form-control" row="3"></textarea>
                 <label asp-for="Input.Location" class="form-label"></label>
             </div>
-            <div class="mb-3">
-                <input asp-for="Input.IsForHire" class="form-check-input" />
-                <label asp-for="Input.IsForHire" class="form-label"></label>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ImageFileName" class="form-control" />
+                <label asp-for="Input.ImageFileName" class="form-label"></label>
             </div>
+            <div class="form-floating mb-3">
+                <input type = "file" asp-for="Input.ImageFile" class="form-control" />
+                <label asp-for="Input.ImageFile" class="form-label"></label>
+            </div>
+
                 @* END: ApplicatonUser custom fields *@
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </form>

@@ -3,21 +3,26 @@ using HamsterForum.Data;
 using HamsterForum.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace HamsterForum.Controllers
 {
     public class HomeController : Controller
     {
         private readonly HamsterForumContext _context;
-        public HomeController(HamsterForumContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public HomeController(HamsterForumContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index() {
 
             var discussions = await _context.Discussion
                  .Include(d => d.Comments) // Load comments count
+                 .Include(d => d.ApplicationUser)
                  .OrderByDescending(d => d.CreateDate)
                  .ToListAsync();
 
@@ -28,10 +33,27 @@ namespace HamsterForum.Controllers
         {
             return View();
         }
+
+        //GET: /Home/Profile/id
+        public async Task<IActionResult> Profile(string? id) {
+            var userId = _userManager.GetUserId(User);
+            var profile = await _context.Discussion
+                .Include(d => d.ApplicationUser)
+                .FirstOrDefaultAsync(d => d.ApplicationUserId == id);
+
+
+            return View(profile);
+
+        }
        
-        public async Task<IActionResult> GetDiscussion(int id) {
+        //Get a single discussion
+        public async Task<IActionResult> GetDiscussion(int? id) {
+            if (id == null) {
+                return NotFound();
+            }
             var discussion = await _context.Discussion
                 .Include(d => d.Comments) // Ensure comments are loaded
+                .Include(d=> d.ApplicationUser)
                 .FirstOrDefaultAsync(d => d.DiscussionId == id);
 
             if (discussion == null) {

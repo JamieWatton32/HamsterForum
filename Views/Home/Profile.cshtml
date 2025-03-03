@@ -1,0 +1,48 @@
+﻿@model HamsterForum.Models.Discussion
+@{
+	ViewData["Title"] = "Profile";
+}
+
+
+
+<div class="container">
+    <div class="row">
+        <a asp-controller="Discussions" asp-action="Create">
+            <h5>
+                Add new Discussion
+            </h5>
+        </a>
+        @{
+
+            var time = (DateTime.Now - Model.CreateDate).Days;
+            int NumComments = 0;
+            if (Model.Comments != null)
+            {
+                NumComments = Model.Comments.Count;
+            }
+
+            <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                <div class="row align-items-center">
+
+                    <img src="@Url.Content("/images/" + Model.ImageFilename)" alt="Picture for @Model.Title" class="img-fluid" style="width:100px; height:100px; border-radius:1rem;" />
+                    <div class="col-md-6 mb-3 mb-sm-0">
+
+                        <a asp-controller="Home" asp-action="GetDiscussion" asp-route-id="@Model.DiscussionId">
+                            <h5>
+                                @Model.Title
+                            </h5>
+                        </a>
+
+
+                        <p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time days ago on @Model.CreateDate.ToString()</span></p>
+                    </div>
+                    <div class="col-md-4 op-7">
+                        <div class="row text-center op-7">
+                            <div class="col px-1"> <i class="ion-connection-bars icon-1x"></i> <span class="d-block text-sm">@NumComments Comments</span> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

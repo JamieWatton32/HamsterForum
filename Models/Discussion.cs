@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using HamsterForum.Data;
 
 namespace HamsterForum.Models {
     public class Discussion {   //primary key
@@ -17,6 +18,12 @@ namespace HamsterForum.Models {
         public IFormFile? ImageFile { get; set; } // nullable!!!
 
         public List<Comment>? Comments { get; set; }
+
+        // Foreign key (AspNetUsers table)
+        public string ApplicationUserId { get; set; } = string.Empty;
+
+        // Navigation property
+        public ApplicationUser? ApplicationUser { get; set; } // nullable!!!
     }
 
 }
