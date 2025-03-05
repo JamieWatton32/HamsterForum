@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HamsterForum.Models;
+using Humanizer;
 using Microsoft.AspNetCore.Identity;
 
 namespace HamsterForum.Data {
@@ -14,6 +16,9 @@ namespace HamsterForum.Data {
 
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
+
+        [NotMapped]
+        public List<Discussion> DiscussionList { get; set; } = [];
 
     }
 }

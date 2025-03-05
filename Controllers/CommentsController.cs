@@ -2,6 +2,7 @@
 using HamsterForum.Data;
 using HamsterForum.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace HamsterForum.Controllers {
@@ -9,10 +10,12 @@ namespace HamsterForum.Controllers {
     public class CommentsController : Controller
     {
         private readonly HamsterForumContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CommentsController(HamsterForumContext context)
+        public CommentsController(HamsterForumContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Comments/Create
@@ -36,6 +39,13 @@ namespace HamsterForum.Controllers {
         public async Task<IActionResult> Create([Bind("CommentId,Content,CreateDate,DiscussionId")] Comment comment) {
 
             if (ModelState.IsValid) {
+
+
+                var userId = _userManager.GetUserId(User);
+               
+                 comment.ApplicationUserId = userId;
+                
+                
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("GetDiscussion", "Home", new {id = comment.DiscussionId});

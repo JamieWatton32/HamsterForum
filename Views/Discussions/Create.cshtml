@@ -29,8 +29,15 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+
         </form>
+         <a asp-controller="Home" asp-action="GetDiscussion" asp-route-id="@Model.DiscussionId">
+            Back to Post
+        </a>
     </div>
+    
+     
+ 
 </div>
 
 @* <div> *@

@@ -6,43 +6,146 @@
 
 
 <div class="container">
-    <div class="row">
-        <a asp-controller="Discussions" asp-action="Create">
-            <h5>
-                Add new Discussion
-            </h5>
-        </a>
-        @{
+	<div class="row">
+		<div class="col-lg-4">
+			<div class="card mb-4">
+				<div class="card-body text-center">
+					<img src="@Url.Content("/profile_img/" + Model.ApplicationUser?.ImageFileName)" alt="avatar"
+						 class="rounded-circle img-fluid" style="width: 150px; height:150px;">
+					<h5 class="my-3">@Model.ApplicationUser?.Name</h5>
+					<p class="text-muted mb-4">@Model.ApplicationUser?.Location</p>
+					<div class="d-flex justify-content-center mb-2">
+						<button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Follow</button>
+						<button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Message</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-8">
+			<div class="card mb-4">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-sm-3">
+							<p class="mb-0">Full Name</p>
+						</div>
+						<div class="col-sm-9">
+							<p class="text-muted mb-0">Johnatan Smith</p>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-sm-3">
+							<p class="mb-0">Email</p>
+						</div>
+						<div class="col-sm-9">
+							<p class="text-muted mb-0">example@example.com</p>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-sm-3">
+							<p class="mb-0">Phone</p>
+						</div>
+						<div class="col-sm-9">
+							<p class="text-muted mb-0">(097) 234-5678</p>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-sm-3">
+							<p class="mb-0">Mobile</p>
+						</div>
+						<div class="col-sm-9">
+							<p class="text-muted mb-0">(098) 765-4321</p>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-sm-3">
+							<p class="mb-0">Address</p>
+						</div>
+						<div class="col-sm-9">
+							<p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-            var time = (DateTime.Now - Model.CreateDate).Days;
-            int NumComments = 0;
-            if (Model.Comments != null)
-            {
-                NumComments = Model.Comments.Count;
-            }
+		@foreach (var item in Model.ApplicationUser.DiscussionList)
+		{
 
-            <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
-                <div class="row align-items-center">
+			int NumComments = 0;
+			if (item.Comments != null)
+			{
+				NumComments = item.Comments.Count;
+			}
 
-                    <img src="@Url.Content("/images/" + Model.ImageFilename)" alt="Picture for @Model.Title" class="img-fluid" style="width:100px; height:100px; border-radius:1rem;" />
-                    <div class="col-md-6 mb-3 mb-sm-0">
+			<div class="col-lg-8">
+				<div class="card mb-4">
+					<div class="card-body">
+						<div class="row">
 
-                        <a asp-controller="Home" asp-action="GetDiscussion" asp-route-id="@Model.DiscussionId">
-                            <h5>
-                                @Model.Title
-                            </h5>
-                        </a>
+							<img src="@Url.Content("/images/" + item.ImageFilename)" alt="Picture for @item.Title" class="img-fluid" style="width:100px; height:100px; border-radius:1rem;" />
+							<div class="col-md-6 mb-3 mb-sm-0">
+
+								<a asp-controller="Home" asp-action="GetDiscussion" asp-route-id="@item.DiscussionId">
+									<h5>
+										@item.Title
+									</h5>
+								</a>
+								@{
+
+									@if ((DateTime.Now - item.CreateDate).Days > 0)
+									{
+										var time = (DateTime.Now - item.CreateDate).Days;
+										<p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time days ago on @item.CreateDate.ToString()</span></p>
+
+									}
+									else if ((DateTime.Now - item.CreateDate).Hours > 0)
+									{
+										var time = (DateTime.Now - item.CreateDate).Hours;
+
+										<p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time hours ago on @item.CreateDate.ToString()</span></p>
+
+									}
+									else if ((DateTime.Now - item.CreateDate).Minutes > 0)
+									{
+										var time = (DateTime.Now - item.CreateDate).Minutes;
+
+										<p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time minutes ago on @item.CreateDate.ToString()</span></p>
+
+									}
+									else
+									{
+										var time = (DateTime.Now - item.CreateDate).Seconds;
+
+										<p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time  seconds on @item.CreateDate.ToString()</span></p>
 
 
-                        <p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time days ago on @Model.CreateDate.ToString()</span></p>
-                    </div>
-                    <div class="col-md-4 op-7">
-                        <div class="row text-center op-7">
-                            <div class="col px-1"> <i class="ion-connection-bars icon-1x"></i> <span class="d-block text-sm">@NumComments Comments</span> </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
+									}
+								}
+							</div>
+							<div class="col-md-4 op-7">
+								<div class="row text-center op-7">
+									<div class="col px-1"> <i class="ion-connection-bars icon-1x"></i> <span class="d-block text-sm">@NumComments Comments</span> </div>
+								</div>
+								<div class="row text-center op-7">
+									<div class="col px-1">
+										<i class="ion-connection-bars icon-1x"></i>
+										<span class="d-block text-sm">
+											<a asp-controller="Home" asp-action="Profile" asp-route-id="@item.ApplicationUserId">
+												@item.ApplicationUser?.Name
+											</a>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+	</div>
 </div>

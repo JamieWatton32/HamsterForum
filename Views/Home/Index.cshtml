@@ -13,8 +13,8 @@
 			</a>
 			@foreach (var item in Model)
 			{
-
-				var time = (DateTime.Now - item.CreateDate).Days;
+				
+				
 				int NumComments = 0;
 				if (item.Comments != null)
 				{
@@ -32,9 +32,37 @@
 									@item.Title
 								</h5>
 							</a>
+							@{
+							
+								@if ((DateTime.Now - item.CreateDate).Days > 0)
+								{
+									var time = (DateTime.Now - item.CreateDate).Days;
+									<p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time days ago on @item.CreateDate.ToString()</span></p>
+
+								}
+								else if ((DateTime.Now - item.CreateDate).Hours > 0)
+								{
+									var time = (DateTime.Now - item.CreateDate).Hours;
+
+									<p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time hours ago on @item.CreateDate.ToString()</span></p>
+
+								}
+								else if ((DateTime.Now - item.CreateDate).Minutes > 0)
+								{
+									var time = (DateTime.Now - item.CreateDate).Minutes;
+
+									<p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time minutes ago on @item.CreateDate.ToString()</span></p>
+
+								}
+								else
+								{
+									var time = (DateTime.Now - item.CreateDate).Seconds;
+
+									<p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time  seconds on @item.CreateDate.ToString()</span></p>
 
 
-							<p class="text-sm"><span class="op-6">Posted</span> <span class="op-6">@time days ago on @item.CreateDate.ToString()</span></p>
+								}
+							}
 						</div>
 						<div class="col-md-4 op-7">
 							<div class="row text-center op-7">

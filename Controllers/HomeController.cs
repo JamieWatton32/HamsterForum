@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace HamsterForum.Controllers
 {
@@ -26,6 +27,8 @@ namespace HamsterForum.Controllers
                  .OrderByDescending(d => d.CreateDate)
                  .ToListAsync();
 
+       
+
             return View(discussions);
         }
 
@@ -40,7 +43,14 @@ namespace HamsterForum.Controllers
             var profile = await _context.Discussion
                 .Include(d => d.ApplicationUser)
                 .FirstOrDefaultAsync(d => d.ApplicationUserId == id);
+            var discussion = await _context.Discussion
+               .Include(d => d.Comments) // Include related comments
+               .ToListAsync();
 
+            foreach(var item in discussion) {
+                profile?.ApplicationUser?.DiscussionList.Add(item);
+            }
+           
 
             return View(profile);
 
@@ -52,9 +62,11 @@ namespace HamsterForum.Controllers
                 return NotFound();
             }
             var discussion = await _context.Discussion
-                .Include(d => d.Comments) // Ensure comments are loaded
-                .Include(d=> d.ApplicationUser)
+                .Include(d => d.Comments) // Include related comments
+                    .ThenInclude(c => c.ApplicationUser) // Include the user associated with each comment
                 .FirstOrDefaultAsync(d => d.DiscussionId == id);
+
+
 
             if (discussion == null) {
                 return NotFound();
