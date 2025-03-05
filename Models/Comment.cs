@@ -10,6 +10,8 @@ namespace HamsterForum.Models {
         //foreign key
         public int DiscussionId { get; set; }
 
+        // Navigation property
+        public ApplicationUser? ApplicationUser { get; set; } // nullable!!!
 
     }
 

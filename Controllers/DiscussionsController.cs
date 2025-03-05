@@ -27,8 +27,9 @@ namespace HamsterForum.Controllers {
             var discussions = await _context.Discussion
                 .Where(d => d.ApplicationUserId == userId)
                .Include(d => d.Comments)
+            
                .OrderByDescending(d => d.CreateDate)
-                .ToListAsync();
+               .ToListAsync();
             return View(discussions);
         }
 
