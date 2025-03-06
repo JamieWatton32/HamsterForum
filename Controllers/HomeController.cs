@@ -73,7 +73,8 @@ namespace HamsterForum.Controllers
                 return NotFound();
             }
             var discussion = await _context.Discussion
-                .Include(d => d.Comments) // Include related comments
+                .Include(d => d.ApplicationUser)
+                .Include(d => d.Comments!)
                     .ThenInclude(c => c.ApplicationUser) // Include the user associated with each comment
                 .FirstOrDefaultAsync(d => d.DiscussionId == id);
 

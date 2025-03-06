@@ -17,7 +17,7 @@ namespace HamsterForum.Models {
         [Display(Name = "Photograph")]
         public IFormFile? ImageFile { get; set; } // nullable!!!
 
-        public List<Comment>? Comments { get; set; }
+        public List<Comment>? Comments { get; set; } = [];
 
         // Foreign key (AspNetUsers table)
         public string ApplicationUserId { get; set; } = string.Empty;

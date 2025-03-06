@@ -4,56 +4,39 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="mb-4">Discussions</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayName("Image")
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                 <img src="@Url.Content("/images/" + item.ImageFilename)" alt="Picture for @item.Title" class="img-fluid" style="max-height:50px;" />
-            </td>
-            <td>
-                    <p>@item.CreateDate.Date.ToShortDateString()</p>
-            </td>
-             <td>
-                <div class="row">
-                        <div class="col-md-8" style="display:flex;">
-                            <a asp-action="Edit" asp-route-id="@item.DiscussionId">Edit&nbsp;</a>|&nbsp
-                            <a asp-action="GetDiscussion" asp-controller="Home" asp-route-id="@item.DiscussionId">&nbspDetails&nbsp;</a>|&nbsp
-                            <a asp-action="Delete" asp-route-id="@item.DiscussionId">&nbspDelete</a>
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</div>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100 overflow-hidden">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">@Html.DisplayFor(modelItem => item.Title)</h4>
+                </div>
+                <div class="card-body h-auto">
+                    <div class="d-flex">
+                        <img src="@Url.Content("/images/" + item.ImageFilename)"
+                             alt="Picture for @item.Title"
+                             class="img-thumbnail me-3"
+                             style="max-height:75px; width:auto;" />
+                        <p class="card-text" style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;">
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </p>
                     </div>
                 </div>
-  
-            </td>
-        </tr>
-}
-
-    </tbody>
-</table>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <small class="text-muted">@item.CreateDate.ToShortDateString()</small>
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@item.DiscussionId" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="GetDiscussion" asp-controller="Home" asp-route-id="@item.DiscussionId" class="btn btn-info btn-sm">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.DiscussionId" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

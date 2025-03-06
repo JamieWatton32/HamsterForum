@@ -44,7 +44,7 @@ namespace HamsterForum.Controllers {
         //    {
         //        return NotFound();
         //    }
-            
+
         //    var discussion = await _context.Discussion
         //        .Include(d=>d.Comments)
         //        .OrderByDescending(d => d.CreateDate)
@@ -58,16 +58,17 @@ namespace HamsterForum.Controllers {
         //}
 
         // GET: Discussions/Create
-        public IActionResult Create()
-        {
-          
+        public IActionResult Create() {
+            var discussion = new Discussion();
 
-             var discussion = new Discussion();
-               
-          
+            var userId = _userManager.GetUserId(User);
+            if (userId != null) {
+                discussion.ApplicationUser = _context.Users.FirstOrDefault(u => u.Id == userId);
+            }
 
             return View(discussion);
         }
+
 
         // POST: Discussions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -79,10 +80,11 @@ namespace HamsterForum.Controllers {
             // rename the uploaded file to a guid (unique filename). Set before photo saved in database.
             discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile?.FileName);
             Console.WriteLine(discussion.ImageFilename);
-            discussion.ApplicationUserId = _userManager.GetUserId(User);
-            
-            
-
+            var userId = _userManager.GetUserId(User);
+            if(userId != null) {
+                discussion.ApplicationUserId = userId;
+            }
+           
             if (ModelState.IsValid) {
                 _context.Add(discussion);
                 await _context.SaveChangesAsync();
