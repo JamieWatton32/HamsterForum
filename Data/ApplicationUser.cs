@@ -17,6 +17,8 @@ namespace HamsterForum.Data {
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
 
+
+        // Only used for a shortcut for getting the discussion list in a users profile page.
         [NotMapped]
         public List<Discussion> DiscussionList { get; set; } = [];
 

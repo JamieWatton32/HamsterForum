@@ -27,6 +27,7 @@ namespace HamsterForum.Controllers {
             var comment = new Comment {
                 DiscussionId = (int)id
             };
+            
 
             return View(comment); 
         }
@@ -36,16 +37,14 @@ namespace HamsterForum.Controllers {
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CommentId,Content,CreateDate,DiscussionId")] Comment comment) {
+        public async Task<IActionResult> Create([Bind("CommentId,Content,CreateDate,DiscussionId,ApplicationUserId")] Comment comment) {
 
             if (ModelState.IsValid) {
 
 
                 var userId = _userManager.GetUserId(User);
-               
-                 comment.ApplicationUserId = userId;
-                
-                
+                comment.ApplicationUserId = userId;
+
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("GetDiscussion", "Home", new {id = comment.DiscussionId});

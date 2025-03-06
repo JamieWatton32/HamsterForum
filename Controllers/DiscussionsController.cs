@@ -23,14 +23,16 @@ namespace HamsterForum.Controllers {
         public async Task<IActionResult> Index()
         {
 
+           
             var userId = _userManager.GetUserId(User);
             var discussions = await _context.Discussion
                 .Where(d => d.ApplicationUserId == userId)
-               .Include(d => d.Comments)
-               .OrderByDescending(d => d.CreateDate)
-               .ToListAsync();
+                .Include(d => d.Comments)
+                .Include(d => d.ApplicationUser) // Add this line
+                .OrderByDescending(d => d.CreateDate)
+                .ToListAsync();
 
-            
+
 
             return View(discussions);
         }
@@ -58,7 +60,13 @@ namespace HamsterForum.Controllers {
         // GET: Discussions/Create
         public IActionResult Create()
         {
-            return View();
+          
+
+             var discussion = new Discussion();
+               
+          
+
+            return View(discussion);
         }
 
         // POST: Discussions/Create
@@ -70,8 +78,11 @@ namespace HamsterForum.Controllers {
         {
             // rename the uploaded file to a guid (unique filename). Set before photo saved in database.
             discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile?.FileName);
+            Console.WriteLine(discussion.ImageFilename);
             discussion.ApplicationUserId = _userManager.GetUserId(User);
-           
+            
+            
+
             if (ModelState.IsValid) {
                 _context.Add(discussion);
                 await _context.SaveChangesAsync();

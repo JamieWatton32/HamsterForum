@@ -5,17 +5,79 @@
 	<h2 class="mb-3">@Model.Title</h2>
 
 	<!-- Original Discussion Post -->
-	<div class="card mb-4">
-		<div class="card-body ">
-			<img src="@Url.Content("/images/" + Model.ImageFilename)" alt="Picture for @Model.Title" class="img-fluid" style="max-height:250px;" />
-			<p>@Model.Content</p>
-			<br>
-			<p>@Model.CreateDate.Date.ToShortDateString()</p>
+	<div class="card mb-4 pl-2">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+					<div class="d-flex flex-start">
+
+							<img class="rounded-circle shadow-1-strong me-3"
+								 src="@Url.Content("/profile_img/" + Model.ApplicationUser?.ImageFileName)" alt="avatar" width="50"
+								 height="50" />
+						
+						
+						@{
+							if ((DateTime.Now - Model.CreateDate).Days >= 365)
+							{
+								var ParentCreateTime = (DateTime.Now - Model.CreateDate).Days%365;
+								<p class="mb-1">
+									@Model.ApplicationUser?.Name <span class="small">- @ParentCreateTime years ago</span>
+								</p>
+
+							}else if ((DateTime.Now - Model.CreateDate).Days > 0)
+							{
+								var ParentCreateTime = (DateTime.Now - Model.CreateDate).Days;
+								<p class="mb-1">
+									@Model.ApplicationUser?.Name <span class="small">- @ParentCreateTime days ago</span>
+								</p>
+
+							}
+							else if ((DateTime.Now - Model.CreateDate).Hours > 0)
+							{
+								var ParentCreateTime = (DateTime.Now - Model.CreateDate).Hours;
+								<p class="mb-1">
+									@Model.ApplicationUser?.Name <span class="small">- @ParentCreateTime hours ago</span>
+								</p>
+
+							}
+							else if ((DateTime.Now - Model.CreateDate).Minutes > 0)
+							{
+								var ParentCreateTime = (DateTime.Now - Model.CreateDate).Minutes;
+								<p class="mb-1">
+									@Model.ApplicationUser?.Name <span class="small">- @ParentCreateTime minutes ago</span>
+								</p>
+
+							}
+							else
+							{
+								var ParentCreateTime = (DateTime.Now - Model.CreateDate).Seconds;
+								<p class="mb-1">
+									@Model.ApplicationUser?.Name <span class="small">- @ParentCreateTime seconds ago</span>
+								</p>
+
+							}
+
+						}
+					</div>
+				</div>
+			</div>
 		</div>
+		<hr class="my-0">
+		<div class="card-body ">
+			<div class="row">
+				<div class="col-10">
+					<p>@Model.Content</p>
+				</div>
+				<div class="col-2">
+					<img src="@Url.Content("/images/" + Model.ImageFilename)" alt="Picture for @Model.Title" class="img-fluid" style="max-height:15rem;" />
+				</div>
+			</div>			
+		</div>
+
+		
 	</div>
 
-	@if (Model.Comments != null && Model.Comments.Any())
-	{
+	
 		<h5>Comments</h5>
 		@foreach (var comment in Model.Comments)
 		{
@@ -32,7 +94,7 @@
 												 height="65" />
 
 												<div class="flex-grow-1 flex-shrink-1">
-													<div>
+												
 														<div class="d-flex justify-content-between align-items-center">
 															@{
 
@@ -74,7 +136,7 @@
 														<p class="small mb-0">
 															@comment.Content
 														</p>
-													</div>
+													
 												</div>
 										</div>
 									</div>
@@ -86,22 +148,25 @@
 			</div>
 
 		}
-	}
-	else
+	
+@if(!Model.Comments.Any())
 	{
 		<p>No comments yet. Be the first to comment!</p>
 	}
-
+	<div class="row mt-4">
+		<div class="d-flex flex-start">
+			<div class="col">
+				<a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="btn btn-secondary">Add a Comment</a>
+				<a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Discussions</a>
+			</div>
+		</div>
+	</div>
 </div>
-<a href="@Url.Action("Create", "Comments", new { id = Model.DiscussionId })">
-	<h5>Add a Comment</h5>
-</a>
+
+
 
 @* @await Html.PartialAsync("~/Views/Comments/Create.cshtml", new HamsterForum.Models.Comment { DiscussionId = Model.DiscussionId })  *@
 
-<div>
-	<a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Discussions</a>
-</div>
 @section Scripts {
 	@{
 		await Html.RenderPartialAsync("_ValidationScriptsPartial");

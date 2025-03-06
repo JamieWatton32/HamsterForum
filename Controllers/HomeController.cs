@@ -39,11 +39,22 @@ namespace HamsterForum.Controllers
 
         //GET: /Home/Profile/id
         public async Task<IActionResult> Profile(string? id) {
+
+            if(id == null) {
+                return NotFound();
+            }
+
             var userId = _userManager.GetUserId(User);
+
             var profile = await _context.Discussion
                 .Include(d => d.ApplicationUser)
                 .FirstOrDefaultAsync(d => d.ApplicationUserId == id);
+            if(profile == null) {
+                return NotFound();
+            }
+            // Get all discussions belonging to the shown user profile.
             var discussion = await _context.Discussion
+                .Where(d=>d.ApplicationUserId == profile.ApplicationUserId)
                .Include(d => d.Comments) // Include related comments
                .ToListAsync();
 
